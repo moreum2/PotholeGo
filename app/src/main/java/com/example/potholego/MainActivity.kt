@@ -50,16 +50,16 @@ class MainActivity : AppCompatActivity() {
         rv_profile.adapter = profileAdapter
 
         datas.apply {
-            add(ProfileData(img = R.drawable.pothole, name = "포트홀1", date = "2023-01-01")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole2, name = "포트홀2", date = "2023-01-02")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole3, name = "포트홀3", date = "2023-01-03")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole4, name = "포트홀4", date = "2023-01-04")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole5, name = "포트홀5", date = "2023-01-05")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole6, name = "포트홀6", date = "2023-01-06")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole7, name = "포트홀7", date = "2023-01-07")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole8, name = "포트홀8", date = "2023-01-08")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole9, name = "포트홀9", date = "2023-01-09")) // 변경된 부분
-            add(ProfileData(img = R.drawable.pothole10, name = "포트홀10", date = "2023-01-10")) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole, name = "수원장안구1", date = "2023-01-01", vibrationDetected = true)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole2, name = "수원장안구2", date = "2023-01-02", vibrationDetected = false)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole3, name = "수원장안구3", date = "2023-01-03", vibrationDetected = true)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole4, name = "수원장안구4", date = "2023-01-04", vibrationDetected = true)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole5, name = "수원장안구5", date = "2023-01-05", vibrationDetected = false)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole6, name = "수원장안구6", date = "2023-01-06", vibrationDetected = false)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole7, name = "수원장안구7", date = "2023-01-07", vibrationDetected = true)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole8, name = "수원장안구8", date = "2023-01-08", vibrationDetected = false)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole9, name = "수원장안구9", date = "2023-01-09", vibrationDetected = true)) // 변경된 부분
+            add(ProfileData(img = R.drawable.pothole10, name = "수원장안구10", date = "2023-01-10", vibrationDetected = true)) // 변경된 부분
 
             profileAdapter.datas = datas
             profileAdapter.notifyDataSetChanged()

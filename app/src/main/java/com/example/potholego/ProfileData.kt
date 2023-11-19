@@ -3,17 +3,19 @@ package com.example.potholego
 import android.os.Parcel
 import android.os.Parcelable
 
-data class ProfileData(val img: Int, val name: String, val date: String) : Parcelable {
+data class ProfileData(val img: Int, val name: String, val date: String, val vibrationDetected: Boolean) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",
-        parcel.readString() ?: ""
+        parcel.readString() ?: "",
+        parcel.readByte() != 0.toByte()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(img)
         parcel.writeString(name)
         parcel.writeString(date)
+        parcel.writeByte(if (vibrationDetected) 1 else 0)
     }
 
     override fun describeContents(): Int {
