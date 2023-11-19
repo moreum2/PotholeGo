@@ -35,12 +35,12 @@ class ProfileAdapter(val context: Context, val listener: OnItemClickListener) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val txtName: TextView = itemView.findViewById(R.id.tv_rv_name)
-        private val txtAge: TextView = itemView.findViewById(R.id.tv_rv_age)
+        private val txtDate: TextView = itemView.findViewById(R.id.tv_rv_age) // 변경된 부분
         private val imgProfile: ImageView = itemView.findViewById(R.id.img_rv_photo)
 
         fun bind(item: ProfileData) {
             txtName.text = item.name
-            txtAge.text = item.age.toString()
+            txtDate.text = item.date.toString() // 변경된 부분
             Glide.with(itemView).load(item.img).into(imgProfile)
 
             itemView.setOnClickListener {
