@@ -1,9 +1,8 @@
-// ProfileData.kt
-
 package com.example.potholego
 
 import android.os.Parcel
 import android.os.Parcelable
+
 data class ProfileData(
     val img: Int,
     val name: String,

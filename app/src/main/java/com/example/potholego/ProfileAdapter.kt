@@ -1,4 +1,3 @@
-// ProfileAdapter.kt
 package com.example.potholego
 
 import android.content.Context
