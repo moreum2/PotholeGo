@@ -67,30 +67,38 @@ class FullScreenImageDialogFragment : DialogFragment() {
     private fun saveImageToGallery(context: Context, imageResId: Int) {
         val bitmap = BitmapFactory.decodeResource(context.resources, imageResId)
 
-        val filename = "${System.currentTimeMillis()}.jpg"
-        var fos: FileOutputStream? = null
+        // bitmap이 null이 아닌지 확인
+        if (bitmap != null) {
+            val filename = "${System.currentTimeMillis()}.jpg"
+            var fos: FileOutputStream? = null
 
-        try {
-            val imageFile = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                filename
-            )
+            try {
+                val imageFile = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                    filename
+                )
 
-            fos = FileOutputStream(imageFile)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                fos = FileOutputStream(imageFile)
+                // bitmap이 null이 아닌 경우에만 compress 호출
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
 
-            // 갤러리에 스캔을 요청하여 사진을 갱신합니다.
-            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-            val contentUri = Uri.fromFile(imageFile)
-            mediaScanIntent.data = contentUri
-            context.sendBroadcast(mediaScanIntent)
+                // 갤러리에 스캔을 요청하여 사진을 갱신합니다.
+                val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                val contentUri = Uri.fromFile(imageFile)
+                mediaScanIntent.data = contentUri
+                context.sendBroadcast(mediaScanIntent)
 
-            Toast.makeText(context, "사진이 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show()
-        } catch (e: IOException) {
-            Toast.makeText(context, "사진 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        } finally {
-            fos?.close()
+                Toast.makeText(context, "사진이 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                Toast.makeText(context, "사진 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            } finally {
+                fos?.close()
+            }
+        } else {
+            // bitmap이 null이면 에러 처리 또는 사용자에게 메시지 표시
+            Toast.makeText(context, "이미지를 로드하는 데 문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
+
 }
