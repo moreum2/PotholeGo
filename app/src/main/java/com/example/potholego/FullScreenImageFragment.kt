@@ -21,15 +21,14 @@ import android.content.Intent
 import android.widget.Toast
 import android.net.Uri
 
-
-
-
 class FullScreenImageDialogFragment : DialogFragment() {
 
     companion object {
         const val TAG = "FullScreenImageDialogFragment"
         const val ARG_IMAGE_RES_ID = "imageResId"
     }
+
+    var resourceId: Int = 0
 
     private lateinit var btnSavePhoto: Button
 
@@ -39,12 +38,9 @@ class FullScreenImageDialogFragment : DialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_full_screen_image, container, false)
 
-        // 이미지 리소스 ID를 인자로 받습니다.
-        val imageResId = arguments?.getInt(ARG_IMAGE_RES_ID) ?: 0
-
         btnSavePhoto = view.findViewById(R.id.btnSavePhoto)
         btnSavePhoto.setOnClickListener {
-            saveImageToGallery(requireContext(), imageResId)
+            saveImageToGallery(requireContext())
         }
 
 
@@ -52,6 +48,7 @@ class FullScreenImageDialogFragment : DialogFragment() {
     }
 
     fun setImageResource(resource: String, resourceId: Int){
+        this.resourceId = resourceId
         view?.findViewById<ImageView>(R.id.imageViewFullScreen)?.let { imageView ->
             Glide.with(this)
                 .load(resourceId)
@@ -64,8 +61,8 @@ class FullScreenImageDialogFragment : DialogFragment() {
         return dialog
     }
 
-    private fun saveImageToGallery(context: Context, imageResId: Int) {
-        val bitmap = BitmapFactory.decodeResource(context.resources, imageResId)
+    private fun saveImageToGallery(context: Context) {
+        val bitmap = BitmapFactory.decodeResource(context.resources, resourceId)
 
         val filename = "${System.currentTimeMillis()}.jpg"
         var fos: FileOutputStream? = null
