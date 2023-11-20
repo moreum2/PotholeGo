@@ -47,16 +47,17 @@ class FullScreenImageDialogFragment : DialogFragment() {
             saveImageToGallery(requireContext(), imageResId)
         }
 
-        // Glide를 사용하여 이미지를 ImageView에 로드합니다.
-        view.findViewById<ImageView>(R.id.imageViewFullScreen)?.let { imageView ->
-            Glide.with(this)
-                .load(imageResId)
-                .into(imageView)
-        }
 
         return view
     }
 
+    fun setImageResource(resource: String, resourceId: Int){
+        view?.findViewById<ImageView>(R.id.imageViewFullScreen)?.let { imageView ->
+            Glide.with(this)
+                .load(resourceId)
+                .into(imageView)
+        }
+    }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
