@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
-import androidx.appcompat.widget.Toolbar
 import android.widget.Switch
 
 class MainActivity : AppCompatActivity() {
