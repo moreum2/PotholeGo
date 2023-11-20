@@ -1,3 +1,4 @@
+// MainActivity.kt
 package com.example.potholego
 
 import androidx.appcompat.app.AppCompatActivity
