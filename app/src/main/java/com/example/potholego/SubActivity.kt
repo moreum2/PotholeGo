@@ -50,7 +50,7 @@ class SubActivity : AppCompatActivity() {
                 commit()
             }
 
-            // imageViewFullScreen를 화면에 보이게 설정
+            // dummyFullScreenView 화면에 보이게 설정
             findViewById<View>(R.id.dummyFullScreenView).setVisibility(View.VISIBLE)
         }
     }
