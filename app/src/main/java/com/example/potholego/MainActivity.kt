@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startActivity(Intent(this, LoadActivity::class.java))
         setContentView(R.layout.activity_main)
 
         initRecycler()
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         // Coroutine을 사용하여 백그라운드 스레드에서 데이터 가져오기
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val querySnapshot = firestore.collection("profileData").get().await()
+                val querySnapshot = firestore.collection("images").get().await()
                 for (document in querySnapshot.documents) {
                     val name = document.getString("name") ?: ""
                     val date = document.getString("date") ?: ""
@@ -106,10 +107,6 @@ class MainActivity : AppCompatActivity() {
                             )
                         )
 
-                        // Log the filename from Firebase Storage
-                        Log.d("MainActivity", "Firebase Storage Filename: $imageUrl")
-
-                        updateData(showAll)
 
                         // TextFileProcessor를 사용하여 텍스트 파일을 처리
                         val textFileProcessor = TextFileProcessor(storage)
