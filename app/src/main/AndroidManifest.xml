@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -28,8 +29,8 @@
             </intent-filter>
         </activity>
         <meta-data
-            android:name="com.naver.maps.map.6fmdd71hfi"
-            android:value="rchUWT6y6xU6YQnH8yLyUSz3hS2FBBIcYN3ADQdA" />
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="6fmdd71hfi" />
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
