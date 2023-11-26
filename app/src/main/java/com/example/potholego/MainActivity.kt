@@ -19,6 +19,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
@@ -94,7 +95,6 @@ class MainActivity : AppCompatActivity() {
                     val storageRef: StorageReference = storage.reference.child(imageUrl)
                     val uri = storageRef.downloadUrl.await()
 
-                    // UI 업데이트는 Main 스레드에서 수행
                     withContext(Dispatchers.Main) {
                         datas.add(
                             ProfileData(
@@ -105,7 +105,11 @@ class MainActivity : AppCompatActivity() {
                                 institution = institution
                             )
                         )
-                        updateRecyclerView(showAll)
+
+                        // Log the filename from Firebase Storage
+                        Log.d("MainActivity", "Firebase Storage Filename: $imageUrl")
+
+                        updateData(showAll)
 
                         // TextFileProcessor를 사용하여 텍스트 파일을 처리
                         val textFileProcessor = TextFileProcessor(storage)
@@ -122,4 +126,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
                 }
-            } catch (exception: Exception
+            } catch (exception: Exception){}
+        }
+    }
+}
