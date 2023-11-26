@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -37,11 +38,7 @@ class SubActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sub)
 
-        (supportFragmentManager.findFragmentById(R.id.map_fragment) as MapFragment?)?: MapFragment.newInstance().also {
-            supportFragmentManager.beginTransaction().add(R.id.map_fragment, it).commit()
-        }.getMapAsync(this)
-
-        val data = intent.getParcelableExtra<ProfileData>("data")
+        data = intent.getParcelableExtra<ProfileData>("data")
         val imgProfile: ImageView = findViewById(R.id.img_profile)
         val tvInstitution: TextView = findViewById(R.id.tv_institution)
         val tvStatus: TextView = findViewById(R.id.tv_status)
@@ -79,9 +76,17 @@ class SubActivity : AppCompatActivity(), OnMapReadyCallback {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.hide(mFragment)
         transaction.commit()
+        val mapFragment = (supportFragmentManager.findFragmentById(R.id.map_fragment) as MapFragment?)
+        mapFragment?.getMapAsync(this)
     }
-    lateinit var data : ProfileData
+    var data : ProfileData? = null
     override fun onMapReady(p0: NaverMap) {
+        // 마커가 있는 위치로 지도의 중심 좌표 설정
+        val markerPosition = LatLng(data!!.latitude.toDouble(), data!!.longitude.toDouble())
+        val cameraUpdate = CameraUpdate.scrollTo(markerPosition)
+
+        // CameraUpdate를 적용하여 지도의 위치 및 줌 설정
+        p0.moveCamera(cameraUpdate)
         val marker = Marker()
         marker.position = LatLng(data!!.latitude.toDouble(), data!!.longitude.toDouble())
         marker.map = p0
