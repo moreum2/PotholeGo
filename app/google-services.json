@@ -1,13 +1,30 @@
 {
-  "type": "service_account",
-  "project_id": "pothole-1412",
-  "private_key_id": "4f57e6e4802912adba4470579049709dc41ce35d",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCrqYh0NyL7B3Sm\ntVZxS+P0DGcnmMCpjuLxpA1yfBj7xa5t2RA3pkC/xoxZYJFh94MNsRYctirDWrQZ\nqXqgNCLVbLyZUMn3qeyBXFPEtuAOQpGri0n0QELbMbU31JUcMBLlgFrhJm+q9OEz\nj/ofaXCE0jPWD4k6dSJUHxdAR7hxrYXg0OLwvVYTkmFAwxKHXwYuMVxgzz5IcmzT\nHgsdRMBs/Q0zLKmQGs2aWD7Auwdi057RJ3g7xVtt5DOX9bFpMhOnhkllof+OvrLf\naK69ZhpPnMbLGcs7F8/EP6lPvb3OuLSkUt5RA77Cwt2JuC/VHLnIrOQJ+ztClOBK\nnxZGErRDAgMBAAECggEAJeDBwEsOR+/sOIDY8yT4xrgZ5u3YzVE/GGzHntRtOtjy\n1UBJSM5BiU+JVottaP2RiGrj4y/7HaIdDXCNI159tTRKJVZjSmfPTPgPb9+ebucX\nd4/DoMaxOeatAwXAZTjiYovBAd9WUpW4P4VsfpPohRZQ49IHyMNh8MfvfHqW41Y3\nJT8ETLh1ivEQI16gMK6CmZzsRR/+4gBqwY3CXGRMup1hmBvwRnx7so2j9X+O+lA7\nevCrloGNvntScZK+cIg95shvljgPX6ygDl3kt4ZTAWUZhuUJxKZrbWNIbPnvN7R/\n5KNQLSbP++64RuORA1j6EPdKsNAHXKwf2eDcoPpw+QKBgQDVzXaRnsemxLf+y+5f\nc24PHBrsTTWOU/y16jSvPi91aP++N7d939TBlTLZGnF3O79MAh1Eu69aoZP7dcPc\niV0Vh/wRTGD+mjBoqrXUovRpyZ+r7y+e28eAukf5DxnHiIQU2Fx+Sb5IPgpYZo1y\npPvNToCvwVc/YK4YYBS7KUBbZQKBgQDNiuWX8PPkZD64+tzi0R5ZnrEOVrBvbaXV\nv6MiKFxrskoHWR0cNXS519ay+Q5x768DmnpEprX/GRbUAirADQzxiTy+xRVbGkNF\nLavpNs2g4QzKfQ2eynupWCFmSSGl+xR3IYi1qo/iEUAwxdcziFwGqSG/eppQqpbh\nBMfz321ahwKBgA0rg+NCeZ/vPDpIy507mgr6OzpVIzhqOgXmsGofFYNQ/Xf1LKtn\nT07BZwlylIy4tHb1JmJmgU2+6EO0JGWAXKiH4OIb51mnm9XGtj6r7wxZLCnGKRPL\nDAYE84wG/xqIcUJrdX8eAcencrGxV4M5YH1sGYc6DKrNxMuhl4VT7C/1AoGAIuqO\neBIxjEHPOeM7tLgrfLPthe8KB9PLkRT95GaQ1Kaz1q23uTwHeS6GRV7zqj06MNWE\nIbdkQVKEwz0fAAL3iOx0Sj/2kcRTWyQYCQULR2ITpy45KxlginLzMYoI0kZlwpsK\nuzmfOZsOmXpyRUnLwEHo/rsYDc381XrXcMEqtW8CgYEAlBf5ItES4zsf9ra8NwOr\nVA2suRO2Eg082n+kzWSVOJTIZQYcrOWab32i/fjablnQaF5B04jrTBFH0YzCPtO2\n3IxGefw/PBTd7rgcm+FwHfP27wwt4QkKL729x24DR/M4y1VdO1r1DpFYbi5EllvJ\nSGCn2Ei8hKCsFih6D2YAIZA=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-mhme1@pothole-1412.iam.gserviceaccount.com",
-  "client_id": "111536030715136148768",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mhme1%40pothole-1412.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+  "project_info": {
+    "project_number": "660826579104",
+    "firebase_url": "https://pothole-1412-default-rtdb.firebaseio.com",
+    "project_id": "pothole-1412",
+    "storage_bucket": "pothole-1412.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660826579104:android:34a58f962f6bc72c2ce9c5",
+        "android_client_info": {
+          "package_name": "com.example.potholego"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJpVnjcF26HQGwGN5_FSejDgmxV05RWrw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }
