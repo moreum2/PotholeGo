@@ -68,7 +68,7 @@ class ProfileAdapter(val context: Context, val listener: OnItemClickListener) :
         fun bind(item: ProfileData) {
             txtName.text = item.name
             txtDate.text = item.date.toString()
-            Glide.with(itemView).load(item.img).into(imgProfile)
+            Glide.with(itemView).load(item.imgUrl).into(imgProfile)
 
             // 진동 감지 여부에 따라 텍스트뷰를 처리
             if (item.vibrationDetected) {
