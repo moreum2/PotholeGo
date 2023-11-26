@@ -40,11 +40,29 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            val list = storageRef.child("images").listAll().await()
-            list.items.map {
-//                ProfileData(imageUrl = it.downloadUrl.await())
+            val imagelist = storageRef.child("images").listAll().await()
+            imagelist.items.map {
+                ProfileData(imageUrl = it.downloadUrl.await())
             }
         }
+
+        lifecycleScope.launch {
+            val textlist = storageRef.child("texts").listAll().await()
+
+            val textlist_onebyte: Long = 1024 * 1024
+            textlist.items.map {
+                val bytes = it.getBytes(textlist_onebyte).await()
+
+                // 바이트 배열을 UTF-8 문자열로 변환
+                val utf8String = bytes.toString(Charsets.UTF_8).split("\t")
+
+                // 결과 확인을 위해 로그에 출력
+                Log.e("test", utf8String.toString())
+
+                ProfileData(name = utf8String[0], date = utf8String[1], vibrationDetected = utf8String[2].toBoolean(), institution = utf8String[3] )
+            }
+        }
+
         setContentView(R.layout.activity_main)
 
 
