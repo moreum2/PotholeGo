@@ -3,7 +3,10 @@ package com.example.potholego
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -11,15 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import android.graphics.BitmapFactory
-import android.content.Intent
-import android.widget.Toast
-import android.net.Uri
+
 
 class FullScreenImageDialogFragment : DialogFragment() {
 
@@ -28,7 +29,7 @@ class FullScreenImageDialogFragment : DialogFragment() {
         const val ARG_IMAGE_RES_ID = "imageResId"
     }
 
-    var resourceId: Int = 0
+    var resourceId: String = ""
 
     private lateinit var btnSavePhoto: Button
 
@@ -47,11 +48,11 @@ class FullScreenImageDialogFragment : DialogFragment() {
         return view
     }
 
-    fun setImageResource(resource: String, resourceId: Int){
+    fun setImageResource(resource: String, resourceId: String){
         this.resourceId = resourceId
         view?.findViewById<ImageView>(R.id.imageViewFullScreen)?.let { imageView ->
-            Glide.with(this)
-                .load(resourceId)
+            Glide.with(imageView)
+                .load("https://firebasestorage.googleapis.com/v0/b/pothole-1412.appspot.com/o/pothole13.jpg?alt=media&token=e31264db-15d7-4487-9b04-14d4b594a260")
                 .into(imageView)
         }
     }
@@ -62,8 +63,7 @@ class FullScreenImageDialogFragment : DialogFragment() {
     }
 
     private fun saveImageToGallery(context: Context) {
-        val bitmap = BitmapFactory.decodeResource(context.resources, resourceId)
-
+        val bitmap = (view?.findViewById<ImageView>(R.id.imageViewFullScreen)?.getDrawable() as? BitmapDrawable)?.bitmap
         val filename = "${System.currentTimeMillis()}.jpg"
         var fos: FileOutputStream? = null
 
@@ -74,7 +74,7 @@ class FullScreenImageDialogFragment : DialogFragment() {
             )
 
             fos = FileOutputStream(imageFile)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fos)
 
             // 갤러리에 스캔을 요청하여 사진을 갱신합니다.
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)

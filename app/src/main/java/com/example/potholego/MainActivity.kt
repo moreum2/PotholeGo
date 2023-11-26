@@ -1,16 +1,41 @@
 // MainActivity.kt
 package com.example.potholego
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Switch
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.example.potholego.ProfileAdapter
+import com.example.potholego.ProfileData
+import com.example.potholego.R
+import com.example.potholego.SubActivity
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class MainActivity : AppCompatActivity() {
-    lateinit var profileAdapter: ProfileAdapter
-    val datas = mutableListOf<ProfileData>()
+
+    private lateinit var profileAdapter: ProfileAdapter
+    private val datas = mutableListOf<ProfileData>()
+
+    // 추가된 부분: FirebaseApp 인스턴스
+    private val firebaseApp: FirebaseApp by lazy {
+        FirebaseApp.initializeApp(this)!!
+    }
+
+    // 추가된 부분: FirebaseFirestore 인스턴스
+    private val firestore: FirebaseFirestore by lazy {
+        FirebaseFirestore.getInstance()
+    }
+
+    // 추가된 부분: FirebaseStorage 인스턴스
+    private val storage: FirebaseStorage by lazy {
+        FirebaseStorage.getInstance()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,26 +75,53 @@ class MainActivity : AppCompatActivity() {
     private fun updateData(showAll: Boolean) {
         datas.clear()
 
-        datas.apply {
-            add(ProfileData(img = R.drawable.pothole, name = "수원장안구1", date = "2023-01-01", vibrationDetected = true, institution = "도로담당기관1"))
-            add(ProfileData(img = R.drawable.pothole2, name = "수원장안구2", date = "2023-01-02", vibrationDetected = false, institution = "도로담당기관2"))
-            add(ProfileData(img = R.drawable.pothole3, name = "수원장안구3", date = "2023-01-03", vibrationDetected = true, institution = "도로담당기관3"))
-            add(ProfileData(img = R.drawable.pothole4, name = "수원장안구4", date = "2023-01-04", vibrationDetected = true, institution = "도로담당기관4"))
-            add(ProfileData(img = R.drawable.pothole5, name = "수원장안구5", date = "2023-01-05", vibrationDetected = false, institution = "도로담당기관5"))
-            add(ProfileData(img = R.drawable.pothole6, name = "수원장안구6", date = "2023-01-06", vibrationDetected = false, institution = "도로담당기관6"))
-            add(ProfileData(img = R.drawable.pothole7, name = "수원장안구7", date = "2023-01-07", vibrationDetected = true, institution = "도로담당기관7"))
-            add(ProfileData(img = R.drawable.pothole8, name = "수원장안구8", date = "2023-01-08", vibrationDetected = false, institution = "도로담당기관8"))
-            add(ProfileData(img = R.drawable.pothole9, name = "수원장안구9", date = "2023-01-09", vibrationDetected = true, institution = "도로담당기관9"))
-            add(ProfileData(img = R.drawable.pothole10, name = "수원장안구10", date = "2023-01-10", vibrationDetected = true, institution = "도로담당기관10"))
+        firestore.collection("profileData")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    val name = document.getString("name") ?: ""
+                    val date = document.getString("date") ?: ""
+                    val vibrationDetected = document.getBoolean("vibrationDetected") ?: false
+                    val institution = document.getString("institution") ?: ""
+                    val imageUrl = document.getString("imageUrl") ?: ""
 
-            // 스위치 버튼에 따라 데이터 필터링
-            if (showAll) {
-                profileAdapter.datas = datas
-            } else {
-                profileAdapter.datas = datas.filter { it.vibrationDetected }.toMutableList()
+                    // Firebase Storage에서 이미지 다운로드
+                    val storageRef: StorageReference = storage.reference.child(imageUrl)
+                    storageRef.downloadUrl.addOnSuccessListener { uri ->
+                        datas.add(ProfileData(imgUrl = uri.toString(), name = name, date = date, vibrationDetected = vibrationDetected, institution = institution))
+                        updateRecyclerView(showAll)
+
+                        // TextFileProcessor를 사용하여 텍스트 파일을 처리
+                        val textFileProcessor = TextFileProcessor(storage)
+                        textFileProcessor.processTextFile(imageUrl,
+                            onSuccess = { textFileUrl ->
+                                // 텍스트 파일을 성공적으로 처리한 경우의 작업
+                                Log.d("MainActivity", "Successfully processed text file: $textFileUrl")
+                            },
+                            onFailure = {
+                                // 텍스트 파일 처리 실패 시의 작업
+                                Log.e("MainActivity", "Failed to process text file")
+                            }
+                        )
+                    }.addOnFailureListener { exception ->
+                        // 이미지 다운로드 실패 시 처리
+                    }
+                }
             }
+            .addOnFailureListener { exception ->
+                // 처리 중 오류 발생 시 여기로 들어옴
+                // 오류 처리를 원하면 추가 구현이 필요
+            }
+    }
 
-            profileAdapter.notifyDataSetChanged()
+    private fun updateRecyclerView(showAll: Boolean) {
+        // 스위치 버튼에 따라 데이터 필터링
+        if (showAll) {
+            profileAdapter.datas = datas
+        } else {
+            profileAdapter.datas = datas.filter { it.vibrationDetected }.toMutableList()
         }
+
+        profileAdapter.notifyDataSetChanged()
     }
 }

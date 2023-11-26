@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 
 class SubActivity : AppCompatActivity() {
 
@@ -31,7 +32,9 @@ class SubActivity : AppCompatActivity() {
         val tvInstitution: TextView = findViewById(R.id.tv_institution)
         val tvStatus: TextView = findViewById(R.id.tv_status)
 
-        imgProfile.setImageResource(data?.img ?: 0)
+        Glide.with(imgProfile)
+            .load("https://firebasestorage.googleapis.com/v0/b/pothole-1412.appspot.com/o/pothole13.jpg?alt=media&token=e31264db-15d7-4487-9b04-14d4b594a260")
+            .into(imgProfile)
         tvInstitution.text = data?.institution ?: ""
         val tvName: TextView = findViewById(R.id.tv_rv_name)
         tvName.text = data?.name ?: ""
@@ -46,7 +49,7 @@ class SubActivity : AppCompatActivity() {
 
         // ImageView 클릭 이벤트 처리
         imgProfile.setOnClickListener {
-            mFragment.setImageResource(FullScreenImageDialogFragment.ARG_IMAGE_RES_ID, data?.img ?: 0)
+            mFragment.setImageResource(FullScreenImageDialogFragment.ARG_IMAGE_RES_ID, data?.imgUrl ?: "")
 
             // Fragment를 표시하기 위해 FragmentTransaction을 사용
             val transaction = supportFragmentManager.beginTransaction()
