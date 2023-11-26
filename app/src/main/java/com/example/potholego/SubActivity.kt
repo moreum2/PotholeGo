@@ -32,9 +32,6 @@ class SubActivity : AppCompatActivity() {
         val tvInstitution: TextView = findViewById(R.id.tv_institution)
         val tvStatus: TextView = findViewById(R.id.tv_status)
 
-        Glide.with(imgProfile)
-            .load("https://firebasestorage.googleapis.com/v0/b/pothole-1412.appspot.com/o/pothole13.jpg?alt=media&token=e31264db-15d7-4487-9b04-14d4b594a260")
-            .into(imgProfile)
         tvInstitution.text = data?.institution ?: ""
         val tvName: TextView = findViewById(R.id.tv_rv_name)
         tvName.text = data?.name ?: ""

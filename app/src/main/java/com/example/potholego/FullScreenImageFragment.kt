@@ -50,10 +50,20 @@ class FullScreenImageDialogFragment : DialogFragment() {
 
     fun setImageResource(resource: String, resourceId: String){
         this.resourceId = resourceId
+
         view?.findViewById<ImageView>(R.id.imageViewFullScreen)?.let { imageView ->
-            Glide.with(imageView)
-                .load("https://firebasestorage.googleapis.com/v0/b/pothole-1412.appspot.com/o/pothole13.jpg?alt=media&token=e31264db-15d7-4487-9b04-14d4b594a260")
-                .into(imageView)
+            if (resourceId.startsWith("android.resource://")) {
+                // resourceId가 이미 리소스 ID인 경우에만 변환
+                val resId = resourceId.substring("android.resource://${context?.packageName}/".length).toInt()
+                Glide.with(imageView)
+                    .load(resId)
+                    .into(imageView)
+            } else {
+                // resourceId가 일반 URL인 경우
+                Glide.with(imageView)
+                    .load(resourceId)
+                    .into(imageView)
+            }
         }
     }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
