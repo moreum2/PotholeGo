@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.potholego.ProfileAdapter
 import com.example.potholego.ProfileData
@@ -16,6 +17,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -75,9 +79,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateData(showAll: Boolean) {
         datas.clear()
 
-        firestore.collection("profileData")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
+        // Coroutine을 사용하여 백그라운드 스레드에서 데이터 가져오기
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val querySnapshot = firestore.collection("profileData").get().await()
                 for (document in querySnapshot.documents) {
                     val name = document.getString("name") ?: ""
                     val date = document.getString("date") ?: ""
@@ -87,13 +92,25 @@ class MainActivity : AppCompatActivity() {
 
                     // Firebase Storage에서 이미지 다운로드
                     val storageRef: StorageReference = storage.reference.child(imageUrl)
-                    storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        datas.add(ProfileData(imgUrl = uri.toString(), name = name, date = date, vibrationDetected = vibrationDetected, institution = institution))
+                    val uri = storageRef.downloadUrl.await()
+
+                    // UI 업데이트는 Main 스레드에서 수행
+                    withContext(Dispatchers.Main) {
+                        datas.add(
+                            ProfileData(
+                                imgUrl = uri.toString(),
+                                name = name,
+                                date = date,
+                                vibrationDetected = vibrationDetected,
+                                institution = institution
+                            )
+                        )
                         updateRecyclerView(showAll)
 
                         // TextFileProcessor를 사용하여 텍스트 파일을 처리
                         val textFileProcessor = TextFileProcessor(storage)
-                        textFileProcessor.processTextFile(imageUrl,
+                        textFileProcessor.processTextFile(
+                            imageUrl,
                             onSuccess = { textFileUrl ->
                                 // 텍스트 파일을 성공적으로 처리한 경우의 작업
                                 Log.d("MainActivity", "Successfully processed text file: $textFileUrl")
@@ -103,25 +120,6 @@ class MainActivity : AppCompatActivity() {
                                 Log.e("MainActivity", "Failed to process text file")
                             }
                         )
-                    }.addOnFailureListener { exception ->
-                        // 이미지 다운로드 실패 시 처리
                     }
                 }
-            }
-            .addOnFailureListener { exception ->
-                // 처리 중 오류 발생 시 여기로 들어옴
-                // 오류 처리를 원하면 추가 구현이 필요
-            }
-    }
-
-    private fun updateRecyclerView(showAll: Boolean) {
-        // 스위치 버튼에 따라 데이터 필터링
-        if (showAll) {
-            profileAdapter.datas = datas
-        } else {
-            profileAdapter.datas = datas.filter { it.vibrationDetected }.toMutableList()
-        }
-
-        profileAdapter.notifyDataSetChanged()
-    }
-}
+            } catch (exception: Exception

@@ -47,6 +47,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("com.google.android.gms:play-services-maps:17.0.1")
     implementation("com.naver.maps:map-sdk:3.14.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
 
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
