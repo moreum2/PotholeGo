@@ -56,16 +56,7 @@ class FullScreenImageDialogFragment : DialogFragment() {
         this.resourceId = resourceId
 
         view?.findViewById<ImageView>(R.id.imageViewFullScreen)?.let { imageView ->
-            val pathReference = storageRef.child("images/pothole1.jpg")
-            pathReference.downloadUrl.addOnSuccessListener { uri ->
-                // Glide를 사용하여 이미지를 ImageView에 로드
-                Glide.with(this)
-                    .load(uri)
-                    .into(imageView)
-            }.addOnFailureListener { exception ->
-                // 다운로드 실패 시 처리
-                // 예를 들어 로그 출력 등을 여기에 추가할 수 있습니다.
-            }
+            Glide.with(this).load(resourceId).into(imageView)
         }
     }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

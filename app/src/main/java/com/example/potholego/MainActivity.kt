@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     var storageRef = storage.reference
 
     private lateinit var profileAdapter: ProfileAdapter
-    private val datas = mutableListOf<ProfileData>()
 
     // 추가된 부분: FirebaseFirestore 인스턴스
     private val firestore: FirebaseFirestore by lazy {
@@ -40,27 +39,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            val imagelist = storageRef.child("images").listAll().await()
-            imagelist.items.map {
-                ProfileData(imageUrl = it.downloadUrl.await())
-            }
-        }
-
-        lifecycleScope.launch {
-            val textlist = storageRef.child("texts").listAll().await()
-
-            val textlist_onebyte: Long = 1024 * 1024
-            textlist.items.map {
-                val bytes = it.getBytes(textlist_onebyte).await()
-
-                // 바이트 배열을 UTF-8 문자열로 변환
-                val utf8String = bytes.toString(Charsets.UTF_8).split("\t")
-
-                // 결과 확인을 위해 로그에 출력
-                Log.e("test", utf8String.toString())
-
-                ProfileData(name = utf8String[0], date = utf8String[1], vibrationDetected = utf8String[2].toBoolean(), institution = utf8String[3] )
-            }
+                val textlist_onebyte: Long = 1024 * 1024
+                val imagelist = storageRef.child("images").listAll().await().items
+                val textlist = storageRef.child("texts").listAll().await().items.map {
+                    it.getBytes(textlist_onebyte).await().toString(Charsets.UTF_8).split("\t")
+                }
+                val profileDataList = imagelist.zip(textlist) { l1, l2 ->
+                    ProfileData(imgUrl = l1.downloadUrl.await().toString(), name = l2[0], date = l2[1], vibrationDetected = l2[2].toBoolean(), institution = l2[3], latitude = l2[4].toFloat(), longitude = l2[5].toFloat() )
+                }
+                profileAdapter.datas = profileDataList.toMutableList()
         }
 
         setContentView(R.layout.activity_main)
@@ -70,6 +57,8 @@ class MainActivity : AppCompatActivity() {
 
         val switchButton: Switch = findViewById(R.id.switchButton)
         switchButton.setOnCheckedChangeListener { _, isChecked ->
+            profileAdapter.showVibratedOnly = isChecked
+            profileAdapter.updateData()
         }
     }
 

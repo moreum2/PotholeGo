@@ -9,14 +9,18 @@ data class ProfileData(
     val name: String,
     val date: String,
     val vibrationDetected: Boolean,
-    val institution: String
+    val institution: String,
+    val latitude: Float,
+    val longitude: Float
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readByte() != 0.toByte(),
-        parcel.readString() ?: ""
+        parcel.readString() ?: "",
+        parcel.readFloat() ?:0f,
+        parcel.readFloat()?:0f
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -25,6 +29,8 @@ data class ProfileData(
         parcel.writeString(date)
         parcel.writeByte(if (vibrationDetected) 1 else 0)
         parcel.writeString(institution)
+        parcel.writeFloat(latitude)
+        parcel.writeFloat(longitude)
     }
 
     override fun describeContents(): Int {

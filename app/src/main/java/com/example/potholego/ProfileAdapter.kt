@@ -22,7 +22,7 @@ class ProfileAdapter(val context: Context, val listener: OnItemClickListener) :
 
     private var allDatas = mutableListOf<ProfileData>() // 전체 목록을 유지하는 변수
     private var filteredDatas = mutableListOf<ProfileData>() // 필터링된 목록을 유지하는 변수
-    private var showVibratedOnly = false // 진동 감지 여부에 따라 필터링할지 여부를 결정하는 변수
+    var showVibratedOnly = false // 진동 감지 여부에 따라 필터링할지 여부를 결정하는 변수
 
     var datas = mutableListOf<ProfileData>()
         set(value) {

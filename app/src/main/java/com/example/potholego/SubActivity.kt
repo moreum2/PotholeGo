@@ -36,18 +36,8 @@ class SubActivity : AppCompatActivity() {
         val tvInstitution: TextView = findViewById(R.id.tv_institution)
         val tvStatus: TextView = findViewById(R.id.tv_status)
 
-        val pathReference = storageRef.child("images/pothole1.jpg")
+        Glide.with(this).load(data?.imgUrl).into(imgProfile)
 
-        // 다운로드 URL을 비동기적으로 가져옴
-        pathReference.downloadUrl.addOnSuccessListener { uri ->
-            // Glide를 사용하여 이미지를 ImageView에 로드
-            Glide.with(this)
-                .load(uri)
-                .into(imgProfile)
-        }.addOnFailureListener { exception ->
-            // 다운로드 실패 시 처리
-            // 예를 들어 로그 출력 등을 여기에 추가할 수 있습니다.
-        }
 
         tvInstitution.text = data?.institution ?: ""
         val tvName: TextView = findViewById(R.id.tv_rv_name)
