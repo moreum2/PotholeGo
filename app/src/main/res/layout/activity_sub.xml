@@ -75,7 +75,7 @@
         app:layout_constraintRight_toRightOf="parent"
         />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_fragment"
         android:layout_width="300dp"
         android:layout_height="300dp"
