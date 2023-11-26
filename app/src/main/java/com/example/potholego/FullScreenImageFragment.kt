@@ -17,12 +17,16 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
 
 class FullScreenImageDialogFragment : DialogFragment() {
+
+    val storage = FirebaseStorage.getInstance()
+    var storageRef = storage.reference
 
     companion object {
         const val TAG = "FullScreenImageDialogFragment"
@@ -52,17 +56,15 @@ class FullScreenImageDialogFragment : DialogFragment() {
         this.resourceId = resourceId
 
         view?.findViewById<ImageView>(R.id.imageViewFullScreen)?.let { imageView ->
-            if (resourceId.startsWith("android.resource://")) {
-                // resourceId가 이미 리소스 ID인 경우에만 변환
-                val resId = resourceId.substring("android.resource://${context?.packageName}/".length).toInt()
-                Glide.with(imageView)
-                    .load(resId)
+            val pathReference = storageRef.child("images/pothole1.jpg")
+            pathReference.downloadUrl.addOnSuccessListener { uri ->
+                // Glide를 사용하여 이미지를 ImageView에 로드
+                Glide.with(this)
+                    .load(uri)
                     .into(imageView)
-            } else {
-                // resourceId가 일반 URL인 경우
-                Glide.with(imageView)
-                    .load(resourceId)
-                    .into(imageView)
+            }.addOnFailureListener { exception ->
+                // 다운로드 실패 시 처리
+                // 예를 들어 로그 출력 등을 여기에 추가할 수 있습니다.
             }
         }
     }

@@ -21,31 +21,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
 
+    val storage = FirebaseStorage.getInstance()
+    var storageRef = storage.reference
+
     private lateinit var profileAdapter: ProfileAdapter
     private val datas = mutableListOf<ProfileData>()
-
-    // 추가된 부분: FirebaseApp 인스턴스
-    private val firebaseApp: FirebaseApp by lazy {
-        FirebaseApp.initializeApp(this)!!
-    }
 
     // 추가된 부분: FirebaseFirestore 인스턴스
     private val firestore: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
     }
 
-    // 추가된 부분: FirebaseStorage 인스턴스
-    private val storage: FirebaseStorage by lazy {
-        FirebaseStorage.getInstance()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(Intent(this, LoadActivity::class.java))
+        val pathReference = storageRef.child("images").listAll().addOnSuccessListener {
+            it.items.forEach {
+                Log.e("File name: ", it.name)
+            }
+        }
         setContentView(R.layout.activity_main)
+
 
         initRecycler()
 
@@ -64,8 +64,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, SubActivity::class.java)
 
                 // Pass data to the SubActivity (optional)
-                intent.putExtra("selectedItemName", selectedItem.name)
-                intent.putExtra("selectedItemDate", selectedItem.date)
+                intent.putExtra("data", selectedItem)
 
                 // Start the SubActivity
                 startActivity(intent)
